@@ -1,0 +1,12 @@
+.navBar {
+	display: block;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 4em;
+	background: #4f4f4f;
+}
+
+.navBar img {
+	height: 4em;
+}
