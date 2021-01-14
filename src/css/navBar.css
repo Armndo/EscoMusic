@@ -4,9 +4,71 @@
 	top: 0;
 	width: 100%;
 	height: 4em;
-	background: #4f4f4f;
+	background: #0f0f0f;
 }
 
 .navBar img {
+	height: 3em;
+	/*width: 4em;*/
+	margin-left: 1em;
+	margin-top: .5em;
+	display: inline-block;
+	filter: invert(100%);
+}
+
+.navBar .buscador {
+	display: inline-block;
+	width: 30em;
+	margin: 0;
+	padding: 0;
+	margin-left: 1em;
 	height: 4em;
+	/* background: green; */
+	vertical-align: top
+}
+
+.navBar .buscador input {
+	/* vertical-align: top; */
+	/* height: 4em; */
+	/* top: 0; */
+	margin: 1em;
+	padding: 0 1em;
+	/* border: none; */
+	width: calc(100% - 4px - 4em - 2.5em - 1em);
+	height: calc(100% - 4px - 2em);
+	/* position: absolute; */
+}
+
+.navBar .buscador button {
+	/* vertical-align: top; */
+	/* height: 4em; */
+	/* top: 0; */
+	/* border: none; */
+	/* width: calc(80% - 4px - 2em);
+	height: calc(100% - 4px - 2em); */
+	/* position: absolute; */
+	/* float: left; */
+	width: 2.5em;
+	height: 2.5em;
+	border: none;
+	border-radius: 100%;
+	text-align: center;
+	/* color: white; */
+}
+
+.logout {
+	display: inline-block;
+	width: 6em;
+	height: 64px;
+	background: #2691de;
+	color: #FFF;
+	border: 1px solid #2180c4;
+	float: right;
+	cursor: pointer;
+}
+
+.logout:hover {
+	background: #3da6f2;
+	color: #FFF;
+	border: 1px solid #2180c4;
 }

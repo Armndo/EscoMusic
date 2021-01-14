@@ -2,7 +2,136 @@
 }
 
 .total {
-	background: red;
+	/* background: red; */
 	padding: 8em 4em 4em 4em;
+	width: calc(100% - 8em);
+}
+
+.total .form, .total .table {
+	background: white;
+	padding: 1em;
+	border-radius: 1em;
+}
+
+.title {
+	/* background: blue; */
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: .5em;
+	padding-bottom: .25em;
+	display: block;
+	border-bottom: 1px solid;
+	vertical-align: top;
+}
+
+.title button {
+	width: 10em;
+	height: 2em;
+	margin-left: 1em;
+}
+
+.row {
+	display: block;
 	width: 100%;
+	/* background-color: green; */
+}
+
+.row .col {
+	vertical-align: top;
+	width: calc(100% / 3 - 2em - .5em);
+	display: inline-block;
+	margin: 1em;
+	padding: .25em;
+}
+
+.row .col.full {
+	width: calc(100% - 2em - .5em);
+	text-align: right;
+}
+
+.row .col span {
+	display: block;
+	font-size: 1em;
+	margin-bottom: .5em;
+}
+
+.row .col input {
+	width: calc(100% - 4px - 3em);
+	height: 2em;
+}
+
+.row .col select {
+	width: calc(100% - 4px - 3em);
+	height: 2em;
+}
+
+.row .col button {
+	width: 2em;
+	height: 2em;
+	background: #ffcda2;
+	border: none;
+	font-weight: bolder;
+	border-radius: 100%;
+	margin-left: 1em;
+}
+
+.row .col.full button {
+	width: 10em;
+	height: 3em;
+	background: powderblue;
+	border: none;
+	border-radius: unset;
+	margin: 0;
+}
+
+.row .col span button {
+	width: 2em;
+	height: 2em;
+	background: #cdffa2;
+	border: none;
+	font-weight: bolder;
+	border-radius: 100%;
+	margin: 0;
+}
+
+.row .col input:last-child {
+	width: calc(100% - 4px);
+}
+
+.row .col select:last-child {
+	width: calc(100% - 4px);
+}
+
+.row .col input.number {
+	width: calc(25% - 4px);
+}
+
+.row .col input[type=number] {
+	width: unset;
+}
+
+table {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-collapse:collapse;
+	border: 1px solid;
+}
+
+table thead {
+	background: #8d8d8d;
+	color: white;
+}
+
+table thead th {
+	padding: .5em 0;
+}
+
+table tbody td {
+	text-align: center;
+	padding: .5em 0;	
+}
+
+table tbody tr:nth-child(even) {
+	background: #f0f0f0;
 }

@@ -19,15 +19,16 @@ function Login() {
 	function handleLogin(e) {
 		e.preventDefault();
 
+		let params = new URLSearchParams();
+		params.append('email', email);
+		params.append('password', password);
+
 		axios.post(
 			"http://localhost/api/",
-			params: {
-				email: email,
-				password: password,
-			},
+			params
 		).then(function(response) {
-			console.log(response.data)
-			sessionStorage.setItem("session", JSON.stringify({auth: true, email: email}));
+			let res = response.data;
+			sessionStorage.setItem("session", JSON.stringify({auth: res.auth, user: res.user}));
 			setIsAuth(true);
 		}).catch(function(e) {
 			console.log(e);
@@ -44,7 +45,7 @@ function Login() {
 	    <div className="login">
 	      <div className="tarjeta">
 	      	<form onSubmit={handleLogin}>
-	      		<img src="/logo.png" alt="logo ESCOMusic"/>
+	      		<img src="/logo2.png" alt="logo ESCOMusic"/>
 		      	<span>Correo electrónico:</span>
 		      	<input type="email" placeholder="example@email.com" value={email} onChange={handleEmail}/>
 		      	<span>Contraseña:</span>
