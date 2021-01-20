@@ -51,6 +51,18 @@ function View(props) {
 					</ul>
 				</div>
 				<div className="col">
+					<span>Disqueras:</span>
+					<ul>
+						{props.album.records.length > 0 ? props.album.records.map((record) =>
+							<li key={record.id} onClick={() => goTo("record", record.id)}>
+								<p>{record.record}</p>
+							</li>
+						) : "No hay disqueras."}
+					</ul>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col">
 					<span>Autores:</span>
 					<ul>
 						{props.album.artists.length > 0 ? props.album.artists.map((artist) =>
@@ -60,8 +72,6 @@ function View(props) {
 						) : "No hay autores."}
 					</ul>
 				</div>
-			</div>
-			<div className="row">
 				<div className="col">
 					<span>Bandas:</span>
 					<ul>
@@ -83,11 +93,12 @@ function View(props) {
 					</ul>
 				</div>
 			</div>
+			{props.session.type === "locutor" ?
 			<div className="row">
 				<div className="col full">
 					<button className="editButton" onClick={() => props.setAction("edit")}>Editar</button>
 				</div>
-			</div>
+			</div> : null}
 		</div>
   );
 }

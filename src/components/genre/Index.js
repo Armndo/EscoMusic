@@ -4,15 +4,19 @@ import axios from 'axios';
 function Index(props) {
   const [genres, setGenres] = useState([]);
 
+  let setLoader = props.setLoader;
+
 	useEffect(() => {
+    setLoader(true);
 		axios.get(
 			"http://localhost/api/fetch.php?params[]=genres",
 		).then(function(response) {
 			setGenres(response.data.genres);
+      setLoader(false);
 		}).catch(function(e) {
 			console.log(e);
 		});
-  }, []);
+  }, [setLoader]);
 
   function viewGenre(genre) {
     props.setAction("view")
@@ -52,7 +56,7 @@ function Index(props) {
 		<div className="table">
 			<div className="title">
 				<p>Géneros musicales</p>
-        <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button>
+        {props.session.type === "locutor" ? <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button> : null}
 			</div>
       <div className="row">
         <table>
@@ -79,8 +83,11 @@ function Index(props) {
                 </td>
                 <td>
                   <button className="viewButton" onClick={() => viewGenre(genre)}>Ver</button>
-                  <button className="editButton" onClick={() => editGenre(genre)}>Editar</button>
-                  <button className="deleteButton" onClick={() => handleDestroy(genre, index)}>Eliminar</button>
+                  {props.session.type === "locutor" ?
+                  <>
+                    <button className="editButton" onClick={() => editGenre(genre)}>Editar</button>
+                    <button className="deleteButton" onClick={() => handleDestroy(genre, index)}>Eliminar</button>
+                  </> : null}
                 </td>
               </tr>
             )}

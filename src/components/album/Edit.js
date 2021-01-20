@@ -8,6 +8,8 @@ function Edit(props) {
 	const [length, setLength] = useState(props.album.length);
 	const [genre, setGenre] = useState(toIdArray(props.album.genres));
 	const [genres, setGenres] = useState([]);
+	const [record, setRecord] = useState(toIdArray(props.album.records));
+	const [records, setRecords] = useState([]);
 	const [artist, setArtist] = useState(toIdArray(props.album.artists));
 	const [artists, setArtists] = useState([]);
 	const [band, setBand] = useState(toIdArray(props.album.bands));
@@ -15,9 +17,10 @@ function Edit(props) {
 
 	useEffect(() => {
 		axios.get(
-			"http://localhost/api/fetch.php?params[]=genres&params[]=artists&params[]=bands&input",
+			"http://localhost/api/fetch.php?params[]=genres&params[]=records&params[]=artists&params[]=bands&input",
 		).then(function(response) {
 			setGenres(response.data.genres);
+			setRecords(response.data.records);
 			setArtists(response.data.artists);
 			setBands(response.data.bands);
 		}).catch(function(e) {
@@ -57,6 +60,18 @@ function Edit(props) {
 		arr[index] = value === "" ? "" : +value;
 		setGenre(arr);
 	}
+
+	function removeRecord(index) {
+		let arr = [...record];
+		arr.splice(index, 1);
+		setRecord(arr);
+	}
+
+	function handleRecord(value, index) {
+		let arr = [...record];
+		arr[index] = value === "" ? "" : +value;
+		setRecord(arr);
+	}
 	
 	function removeArtist(index) {
 		let arr = [...artist];
@@ -93,6 +108,7 @@ function Edit(props) {
 			recorded: recorded,
 			length: length,
 			genre: genre,
+			record: record,
 			artist: artist,
 			band: band,
 		};
@@ -151,6 +167,22 @@ function Edit(props) {
 					) : "Agrega un género músical."}
 				</div>
 				<div className="col">
+					<span>Disqueras <button className="createButton" onClick={() => setRecord(record => [...record, ""])}>+</button></span>
+					{record.length > 0 ? record.map((element, index) =>
+						<div key={"records" + index}>
+							<select value={element} onChange={(e) => handleRecord(e.target.value, index)}>
+								<option value="">Selecionar</option>
+								{records.map((element2) => 
+									<option key={element2.id} value={element2.id}>{element2.record}</option>
+								)}
+							</select>
+							<button className="deleteButton" onClick={() => removeRecord(index)}>x</button>
+						</div>
+					) : "Agrega una disquera."}
+				</div>
+			</div>
+			<div className="row">
+				<div className="col">
 					<span>Autores <button className="createButton" onClick={() => setArtist(artist => [...artist, ""])}>+</button></span>
 					{artist.length > 0 ? artist.map((element, index) =>
 						<div key={"artists" + index}>
@@ -164,8 +196,6 @@ function Edit(props) {
 						</div>
 					) : "Agrega un autor."}
 				</div>
-			</div>
-			<div className="row">
 				<div className="col">
 					<span>Bandas: <button className="createButton" onClick={() => setBand(band => [...band, ""])}>+</button></span>
 					{band.length > 0 ? band.map((element, index) =>

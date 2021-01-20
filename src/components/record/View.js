@@ -18,58 +18,36 @@ function View(props) {
   return (
 		<div className="form">
 			<div className="title">
-				<p>Ver Género musical</p>
+				<p>Ver Disquera</p>
         <button className="viewButton" onClick={() => props.setAction("index")}>Index</button>
 			</div>
 			<div className="row">
 				<div className="col">
 					<span>Nombre:</span>
-					<input type="text" value={(props.genre.genre !== "" ? props.genre.genre : "N/A")} disabled/>
+					<input type="text" value={(props.record.record !== "" ? props.record.record : "N/A")} disabled/>
 				</div>
 				<div className="col">
-					<span>Descripción:</span>
-					<textarea rows="8" value={props.genre.description !== null ? props.genre.description : "N/A"} disabled/>
+					<span>Año de fundación:</span>
+					<input type="text" value={props.record.funded !== null ? props.record.funded : "N/A"} disabled/>
 				</div>
 				<div className="col">
-					<span>Bandas:</span>
-					<ul>
-						{props.genre.bands.length > 0 ?  props.genre.bands.map((band) =>
-							<li key={band.id} onClick={() => goTo("band", band.id)}>
-								<p>{band.band}</p>
-							</li>
-						) : "No hay bandas."}
-					</ul>
+					<span>País de origen:</span>
+					<input type="text" value={props.record.country !== null ? props.record.country : "N/A"} disabled/>
 				</div>
 			</div>
 			<div className="row">
 				<div className="col">
-					<span>Artistas:</span>
-					<ul>
-						{props.genre.artists.length > 0 ?  props.genre.artists.map((artist) =>
-							<li key={artist.id} onClick={() => goTo("artist", artist.id)}>
-								<p>{artist.name}</p>
-							</li>
-						) : "No hay artistas."}
-					</ul>
+					<span>Fundador:</span>
+					<input type="text" value={props.record.founder !== null ? props.record.founder : "N/A"} disabled/>
 				</div>
 				<div className="col">
 					<span>Álbumes:</span>
 					<ul>
-						{props.genre.albums.length > 0 ?  props.genre.albums.map((album) =>
+						{props.record.albums.length > 0 ?  props.record.albums.map((album) =>
 							<li key={album.id} onClick={() => goTo("album", album.id)}>
 								<p>{album.album}</p>
 							</li>
 						) : "No hay álbumes."}
-					</ul>
-				</div>
-				<div className="col">
-					<span>Canciones:</span>
-					<ul>
-						{props.genre.songs.length > 0 ?  props.genre.songs.map((song) =>
-							<li key={song.id} onClick={() => goTo("song", song.id)}>
-								<p>{song.song}</p>
-							</li>
-						) : "No hay canciones."}
 					</ul>
 				</div>
 			</div>

@@ -13,7 +13,7 @@ function Logged() {
 	if(session && session.auth) {
 	  return (
 	  	<MainView
-	  		texto={session.user.email}
+	  		session={session.user}
 	  		logout={logout}
 	  	/>
 	  );

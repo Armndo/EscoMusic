@@ -32,7 +32,11 @@
 	vertical-align: top
 }
 
-.navBar .buscador input {
+.navBar .buscador form {
+	height: 4em;
+}
+
+.navBar .buscador form input {
 	/* vertical-align: top; */
 	/* height: 4em; */
 	/* top: 0; */
@@ -44,7 +48,7 @@
 	/* position: absolute; */
 }
 
-.navBar .buscador button {
+.navBar .buscador form button {
 	/* vertical-align: top; */
 	/* height: 4em; */
 	/* top: 0; */

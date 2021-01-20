@@ -83,11 +83,12 @@ function View(props) {
 					</ul>
 				</div>
 			</div>
+			{props.session.type === "locutor" ?
 			<div className="row">
 				<div className="col full">
 					<button className="editButton" onClick={() => props.setAction("edit")}>Editar</button>
 				</div>
-			</div>
+			</div> : null}
 		</div>
   );
 }

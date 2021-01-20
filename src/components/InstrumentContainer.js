@@ -11,9 +11,9 @@ function InstrumentContainer(props) {
     <>
       {(() => {
         switch (props.action) {
-          case "index": return <Index setInstrument={setInstrument} setAction={props.setAction}/>
+          case "index": return <Index setInstrument={setInstrument} setAction={props.setAction} session={props.session} setLoader={props.setLoader}/>
           case "create": return <Create setAction={props.setAction}/>
-          case "view": return <View instrument={instrument} setTab={props.setTab} setAction={props.setAction} setTarget={props.setTarget}/>
+          case "view": return <View instrument={instrument} setTab={props.setTab} setAction={props.setAction} setTarget={props.setTarget} session={props.session}/>
           case "edit": return <Edit setInstrument={setInstrument} instrument={instrument} setAction={props.setAction}/>
           default: return null
         }

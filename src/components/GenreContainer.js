@@ -11,9 +11,9 @@ function GenreContainer(props) {
     <>
       {(() => {
         switch (props.action) {
-          case "index": return <Index setGenre={setGenre} setAction={props.setAction}/>
+          case "index": return <Index setGenre={setGenre} setAction={props.setAction} session={props.session} setLoader={props.setLoader}/>
           case "create": return <Create setAction={props.setAction}/>
-          case "view": return <View genre={genre} setTab={props.setTab} setAction={props.setAction} setTarget={props.setTarget}/>
+          case "view": return <View genre={genre} setTab={props.setTab} setAction={props.setAction} setTarget={props.setTarget} session={props.session}/>
           case "edit": return <Edit setGenre={setGenre} genre={genre} setAction={props.setAction}/>
           default: return null
         }

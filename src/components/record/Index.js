@@ -2,50 +2,50 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Index(props) {
-  const [bands, setBands] = useState([]);
+  const [records, setRecords] = useState([]);
 
   let setLoader = props.setLoader;
 
 	useEffect(() => {
     setLoader(true);
 		axios.get(
-			"http://localhost/api/fetch.php?params[]=bands",
+			"http://localhost/api/fetch.php?params[]=records",
 		).then(function(response) {
-			setBands(response.data.bands);
+			setRecords(response.data.records);
       setLoader(false);
 		}).catch(function(e) {
 			console.log(e);
 		});
   }, [setLoader]);
 
-  function viewBand(band) {
+  function viewRecord(record) {
     props.setAction("view")
-    props.setBand(band);
+    props.setRecord(record);
   }
 
-  function editBand(band) {
+  function editRecord(record) {
     props.setAction("edit")
-    props.setBand(band);
+    props.setRecord(record);
   }
 
-	function handleDestroy(band, index) {
+	function handleDestroy(record, index) {
 		let params = new URLSearchParams();
 
 		let data = {
       action: "destroy",
-      id: band.id,
+      id: record.id,
 		};
 
 		params.append("data", JSON.stringify(data));
 
-    if(window.confirm("¿Eliminar la banda '" + band.band + "'?")) {
+    if(window.confirm("¿Eliminar la disquera '" + record.record + "'?")) {
       axios.post(
-        "http://localhost/api/Controller/BandController.php",
+        "http://localhost/api/Controller/RecordController.php",
         params
       ).then(function(response) {
-        let aux = [...bands];
+        let aux = [...records];
         aux.splice(index, 1);
-        setBands(aux);
+        setRecords(aux);
       }).catch(function(e) {
         console.log(e);
       });
@@ -55,7 +55,7 @@ function Index(props) {
   return (
 		<div className="table">
 			<div className="title">
-				<p>Bandas</p>
+				<p>Disqueras</p>
         {props.session.type === "locutor" ? <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button> : null}
 			</div>
       <div className="row">
@@ -63,23 +63,23 @@ function Index(props) {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Creada en</th>
+              <th>Año de fundación</th>
               <th>País de origen</th>
               <th>Acción</th>
             </tr>
           </thead>
           <tbody>
-            {bands.map((band, index) => 
-              <tr key={band.id}>
-                <td>{band.band === "" ? "N/A" : band.band}</td>
-                <td>{band.created === null ? "N/A" : band.created}</td>
-                <td>{band.country === null ? "N/A" : band.country}</td>
+            {records.map((record, index) => 
+              <tr key={record.id}>
+                <td>{record.record === "" ? "N/A" : record.record}</td>
+                <td>{record.funded === null ? "N/A" : record.funded}</td>
+                <td>{record.country === null ? "N/A" : record.country}</td>
                 <td>
-                  <button className="viewButton" onClick={() => viewBand(band)}>Ver</button>
+                  <button className="viewButton" onClick={() => viewRecord(record)}>Ver</button>
                   {props.session.type === "locutor" ?
                   <>
-                    <button className="editButton" onClick={() => editBand(band)}>Editar</button>
-                    <button className="deleteButton" onClick={() => handleDestroy(band, index)}>Eliminar</button>
+                    <button className="editButton" onClick={() => editRecord(record)}>Editar</button>
+                    <button className="deleteButton" onClick={() => handleDestroy(record, index)}>Eliminar</button>
                   </> : null}
                 </td>
               </tr>

@@ -4,15 +4,19 @@ import axios from 'axios';
 function Index(props) {
   const [albums, setAlbums] = useState([]);
 
+  let setLoader = props.setLoader;
+
 	useEffect(() => {
+    setLoader(true);
 		axios.get(
 			"http://localhost/api/fetch.php?params[]=albums",
 		).then(function(response) {
 			setAlbums(response.data.albums);
+      setLoader(false);
 		}).catch(function(e) {
 			console.log(e);
 		});
-  }, []);
+  }, [setLoader]);
 
   function formatDate(date) {
     if(date === null) {
@@ -61,7 +65,7 @@ function Index(props) {
 		<div className="table">
 			<div className="title">
 				<p>Álbumes</p>
-        <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button>
+        {props.session.type === "locutor" ? <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button> : null}
 			</div>
       <div className="row">
         <table>
@@ -81,8 +85,11 @@ function Index(props) {
                 <td>{album.recorded === null ? "N/A" : album.recorded}</td>
                 <td>
                   <button className="viewButton" onClick={() => viewAlbum(album)}>Ver</button>
-                  <button className="editButton" onClick={() => editAlbum(album)}>Editar</button>
-                  <button className="deleteButton" onClick={() => handleDestroy(album, index)}>Eliminar</button>
+                  {props.session.type === "locutor" ?
+                  <>
+                    <button className="editButton" onClick={() => editAlbum(album)}>Editar</button>
+                    <button className="deleteButton" onClick={() => handleDestroy(album, index)}>Eliminar</button>
+                  </> : null}
                 </td>
               </tr>
             )}

@@ -13,6 +13,7 @@ function Create(props) {
 	const [genres, setGenres] = useState([]);
 	const [artist, setArtist] = useState([]);
 	const [artists, setArtists] = useState([]);
+	const [media, setMedia] = useState([]);
 
 	useEffect(() => {
 		axios.get(
@@ -50,6 +51,18 @@ function Create(props) {
 		setArtist(arr);
 	}
 
+	function removeMedia(index) {
+		let arr = [...media];
+		arr.splice(index, 1);
+		setMedia(arr);
+	}
+
+	function handleMedia(value, type, index) {
+		let arr = [...media];
+		arr[index][type] = value;
+		setMedia(arr);
+	}
+
 	function handleSubmit() {
 		let params = new URLSearchParams();
 
@@ -63,6 +76,7 @@ function Create(props) {
 			album_id: album_id,
 			genre: genre,
 			artist: artist,
+			media: media,
 		};
 
 		params.append("data", JSON.stringify(data));
@@ -142,6 +156,23 @@ function Create(props) {
 							<button className="deleteButton" onClick={() => removeArtist(index)}>x</button>
 						</div>
 					) : "Agrega un autor."}
+				</div>
+				<div className="col">
+					<span>Links <button className="createButton" onClick={() => setMedia(media => [...media, {media: "", link: ""}])}>+</button></span>
+					{media.length > 0 ? media.map((element, index) =>
+						<div key={"media" + index}>
+							<div className="media">
+								<select value={element.media} onChange={(e) => handleMedia(e.target.value, "media", index)}>
+									<option value="">Seleciona un tipo</option>
+									<option value="Video Oficial">Video Oficial</option>
+									<option value="Cover">Cover</option>
+									<option value="Tutorial">Tutorial</option>
+								</select>
+								<input type="text" placeholder="Link" value={element.link} onChange={(e) => handleMedia(e.target.value, "link", index)}/>
+							</div>
+							<button className="media deleteButton" onClick={() => removeMedia(index)}>x</button>
+						</div>
+					) : "Agrega un link."}
 				</div>
 				<div className="col">
 					<span>Letra:</span>

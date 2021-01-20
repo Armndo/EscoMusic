@@ -67,15 +67,26 @@ function View(props) {
 					</ul>
 				</div>
 				<div className="col">
+					<span>Links:</span>
+					<ul>
+						{props.song.medias.length > 0 ?  props.song.medias.map((media) =>
+							<li key={media.id}>
+								<a href={media.link.includes("//") ? media.link : "//" + media.link} target="_blank" rel="noreferrer">{media.media}</a>
+							</li>
+						) : "No hay links."}
+					</ul>
+				</div>
+				<div className="col">
 					<span>Letra:</span>
 					<textarea rows="8" disabled value={props.song.lyrics}/>
 				</div>
 			</div>
+			{props.session.type === "locutor" ?
 			<div className="row">
 				<div className="col full">
 					<button className="editButton" onClick={() => props.setAction("edit")}>Editar</button>
 				</div>
-			</div>
+			</div> : null}
 		</div>
   );
 }
