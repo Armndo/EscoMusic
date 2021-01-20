@@ -6,21 +6,62 @@ function Index(props) {
 
 	useEffect(() => {
 		axios.get(
-			"http://localhost/api/fetch.php?params[]=artist",
+			"http://localhost/api/fetch.php?params[]=artists",
 		).then(function(response) {
-			setArtists(response.data.artist);
+			setArtists(response.data.artists);
 		}).catch(function(e) {
 			console.log(e);
 		});
   }, []);
-  
-  console.log(artists)
+
+  function formatDate(date) {
+    if(date === null) {
+      return "N/A";
+    }
+
+    let arr = date.split("-");
+    return arr[2] + "/" + arr[1] + "/" + arr[0];
+  }
+
+  function viewArtist(artist) {
+    props.setAction("view")
+    props.setArtist(artist);
+  }
+
+  function editArtist(artist) {
+    props.setAction("edit")
+    props.setArtist(artist);
+  }
+
+	function handleDestroy(artist, index) {
+		let params = new URLSearchParams();
+
+		let data = {
+      action: "destroy",
+      id: artist.id,
+		};
+
+		params.append("data", JSON.stringify(data));
+
+    if(window.confirm("¿Eliminar al artista '" + artist.name + "'?")) {
+      axios.post(
+        "http://localhost/api/Controller/ArtistController.php",
+        params
+      ).then(function(response) {
+        let aux = [...artists];
+        aux.splice(index, 1);
+        setArtists(aux);
+      }).catch(function(e) {
+        console.log(e);
+      });
+    }
+	}
 
   return (
 		<div className="table">
 			<div className="title">
-				Artistas
-        <button onClick={() => props.setTabView("")}>Agregar</button>
+				<p>Artistas</p>
+        <button className="createButton" onClick={() => props.setAction("create")}>Agregar</button>
 			</div>
       <div className="row">
         <table>
@@ -30,15 +71,21 @@ function Index(props) {
               <th>Fecha de Nacimiento</th>
               <th>Género</th>
               <th>País de origen</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody>
-            {artists.map((artist) => 
-              <tr>
-                <td>{artist.name}</td>
-                <td>{artist.birthday}</td>
-                <td>{artist.gender}</td>
-                <td>{artist.country}</td>
+            {artists.map((artist, index) => 
+              <tr key={artist.id}>
+                <td>{artist.name === "" ? "N/A" : artist.name}</td>
+                <td>{formatDate(artist.birthday)}</td>
+                <td>{artist.gender === null ? "N/A" : artist.gender}</td>
+                <td>{artist.country === null ? "N/A" : artist.country}</td>
+                <td>
+                  <button className="viewButton" onClick={() => viewArtist(artist)}>Ver</button>
+                  <button className="editButton" onClick={() => editArtist(artist)}>Editar</button>
+                  <button className="deleteButton" onClick={() => handleDestroy(artist, index)}>Eliminar</button>
+                </td>
               </tr>
             )}
           </tbody>

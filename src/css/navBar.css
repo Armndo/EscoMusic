@@ -16,6 +16,11 @@
 	filter: invert(100%);
 }
 
+.navBar img:hover {
+	filter: invert(100%) opacity(80%);
+	cursor: pointer;
+}
+
 .navBar .buscador {
 	display: inline-block;
 	width: 30em;
@@ -54,6 +59,35 @@
 	border-radius: 100%;
 	text-align: center;
 	/* color: white; */
+}
+
+.navBar .selectors {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	/* background: red; */
+	vertical-align: top;
+	height: 100%;
+
+}
+
+.navBar .selectors button {
+	background: none;
+	color: white;
+	margin: 0;
+	vertical-align: top;
+	height: 100%;
+	width: 8em;
+	border: none;
+}
+
+.navBar .selectors button:hover {
+	background: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+}
+
+.navBar .selectors button.active {
+	background: rgba(255, 255, 255, 0.2);
 }
 
 .logout {

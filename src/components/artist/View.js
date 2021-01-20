@@ -1,82 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 function View(props) {
-	const [name, setName] = useState("");
-	const [birthday, setBirthday] = useState("");
-	const [gender, setGender] = useState("");
-	const [country, setCountry] = useState("");
-	const [min, setMin] = useState("");
-	const [max, setMax] = useState("");
-	const [genre, setGenre] = useState([]);
-	const [genres, setGenres] = useState([]);
-	const [instrument, setInstrument] = useState([]);
-	const [instruments, setInstruments] = useState([]);
-	const [media, setMedia] = useState([]);
 
-	useEffect(() => {
+	function goTo(tab, id) {
 		axios.get(
-			"http://localhost/api/fetch.php?params[]=genre&params[]=instrument",
+			"http://localhost/api/fetch.php?params[]=" + tab + "&" + tab + "_id=" + id,
 		).then(function(response) {
-			setGenres(response.data.genre);
-			setInstruments(response.data.instrument);
-		}).catch(function(e) {
-			console.log(e);
-		});
-	}, []);
-
-	function removeGenre(index) {
-		let arr = [...genre];
-		arr.splice(index, 1);
-		setGenre(arr);
-	}
-
-	function handleGenre(value, index) {
-		let arr = [...genre];
-		arr[index] = value === "" ? "" : +value;
-		setGenre(arr);
-	}
-	
-	function removeInstrument(index) {
-		let arr = [...instrument];
-		arr.splice(index, 1);
-		setInstrument(arr);
-	}
-
-	function handleInstrument(value, index) {
-		let arr = [...instrument];
-		arr[index] = value;
-		setInstrument(arr);
-	}
-
-	function removeMedia(index) {
-		let arr = [...media];
-		arr.splice(index, 1);
-		setMedia(arr);
-	}
-
-	function handleMedia(value, index) {
-		let arr = [...media];
-		arr[index] = value;
-		setMedia(arr);
-	}
-
-	function handleSubmit() {
-		let params = new URLSearchParams();
-		params.append('name', name);
-		params.append('birthday', birthday);
-		params.append('gender', gender);
-		params.append('country', country);
-		params.append('years_active', min + " - " + max);
-		params.append('genres', genre);
-		params.append('instruments', instrument);
-		params.append('media', media);
-
-		axios.post(
-			"http://localhost/api/Controller/ArtistController.php",
-			params
-		).then(function(response) {
-			console.log(response.data);
+			props.setTarget(response.data[tab])
+			props.setAction("view");
+			props.setTab(tab);
 		}).catch(function(e) {
 			console.log(e);
 		});
@@ -85,84 +18,100 @@ function View(props) {
   return (
 		<div className="form">
 			<div className="title">
-				Agregar Artista
+				<p>Ver Artista</p>
+        <button className="viewButton" onClick={() => props.setAction("index")}>Index</button>
 			</div>
 			<div className="row">
 				<div className="col">
 					<span>Nombre:</span>
-					<input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+					<input type="text" value={(props.artist.name !== "" ? props.artist.name : "N/A")} disabled/>
 				</div>
 				<div className="col">
 					<span>Fecha de nacimiento:</span>
-					<input type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
+					<input type="text" value={props.artist.birthday !== null ? props.artist.birthday : "N/A"} disabled/>
 				</div>
 				<div className="col">
 					<span>Género:</span>
-					<select value={gender} onChange={(e) => setGender(e.target.value)}>
-						<option value="">Selecionar</option>
-						<option value="Hombre">Hombre</option>
-						<option value="Mujer">Mujer</option>
-						<option value="Otro">Otro</option>
-					</select>
+					<input type="text" value={props.artist.gender !== null ? props.artist.gender : "N/A"} disabled/>
 				</div>
 			</div>
 			<div className="row">
 				<div className="col">
 					<span>País de origen:</span>
-					<select value={country} onChange={(e) => setCountry(e.target.value)}>
-						<option value="">Selecionar</option>
-						<option value="México">México</option>
-					</select>
+					<input type="text" value={props.artist.country !== null ? props.artist.country : "N/A"} disabled/>
 				</div>
 				<div className="col">
-					<span>Años activo:</span>
-					De <input type="text" className="number" value={min} onChange={(e) => setMin(e.target.value === "" ? "" : +e.target.value)}/>
-					{" a "}
-					<input type="text" className="number" value={max} onChange={(e) => setMax(e.target.value === "" ? "" : +e.target.value)}/>
+					<span>Periodo de actividad:</span>
+					<input type="text" value={props.artist.years_active !== null ? props.artist.years_active : "N/A"} disabled/>	
 				</div>
 				<div className="col">
-					<span>Géneros musicales <button onClick={() => setGenre(genre => [...genre, ""])}>+</button></span>
-					{genre.length > 0 ? genre.map((element, index) =>
-						<>
-							<select key={index} value={element} onChange={(e) => handleGenre(e.target.value, index)}>
-								<option value="">Selecionar</option>
-								{genres.map((element2) => 
-									<option value={element2.id}>{element2.genre}</option>
-								)}
-							</select>
-							<button onClick={() => removeGenre(index)}>x</button>
-						</>
-					) : "Agrega un género músical."}
+					<span>Géneros musicales:</span>
+					<ul>
+						{props.artist.genres.length > 0 ? props.artist.genres.map((genre) =>
+							<li key={genre.id} onClick={() => goTo("genre", genre.id)}>
+								<p>{genre.genre}</p>
+							</li>
+						) : "No hay géneros musicales."}
+					</ul>
 				</div>
 			</div>
 			<div className="row">
 				<div className="col">
-					<span>Instrumentos musicales <button onClick={() => setInstrument(instrument => [...instrument, ""])}>+</button></span>
-					{instrument.length > 0 ? instrument.map((element, index) =>
-						<>
-							<select key={index} value={element} onChange={(e) => handleInstrument(e.target.value, index)}>
-								<option value="">Selecionar</option>
-								{instruments.map((element2) => 
-									<option value={element2.id}>{element2.instrument}</option>
-								)}
-							</select>
-							<button onClick={() => removeInstrument(index)}>x</button>
-						</>
-					) : "Agrega un instrumento músical."}
+					<span>Instrumentos musicales:</span>
+					<ul>
+						{props.artist.instruments.length > 0 ? props.artist.instruments.map((instrument) =>
+							<li key={instrument.id} onClick={() => goTo("instrument", instrument.id)}>
+								<p>{instrument.instrument}</p>
+							</li>
+						) : "No hay instrumentos."}
+					</ul>
 				</div>
 				<div className="col">
-					<span>Links <button onClick={() => setMedia(media => [...media, ""])}>+</button></span>
-					{media.length > 0 ? media.map((element, index) =>
-						<>
-							<input type="text" key={index} value={element} onChange={(e) => handleMedia(e.target.value, index)}/>
-							<button onClick={() => removeMedia(index)}>x</button>
-						</>
-					) : "Agrega un link."}
+					<span>Links:</span>
+					<ul>
+						{props.artist.medias.length > 0 ?  props.artist.medias.map((media) =>
+							<li key={media.id}>
+								<a href={media.link.includes("//") ? media.link : "//" + media.link} target="_blank" rel="noreferrer">{media.media}</a>
+							</li>
+						) : "No hay links."}
+					</ul>
+				</div>
+				<div className="col">
+					<span>Bandas:</span>
+					<ul>
+						{props.artist.bands.length > 0 ?  props.artist.bands.map((band) =>
+							<li key={band.id} onClick={() => goTo("band", band.id)}>
+								<p>{band.band}</p>
+							</li>
+						) : "No hay links."}
+					</ul>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col">
+					<span>Álbumes:</span>
+					<ul>
+						{props.artist.albums.length > 0 ?  props.artist.albums.map((album) =>
+							<li key={album.id} onClick={() => goTo("album", album.id)}>
+								<p>{album.album}</p>
+							</li>
+						) : "No hay álbumes."}
+					</ul>
+				</div>
+				<div className="col">
+					<span>Canciones escritas:</span>
+					<ul>
+						{props.artist.songs.length > 0 ?  props.artist.songs.map((song) =>
+							<li key={song.id} onClick={() => goTo("song", song.id)}>
+								<p>{song.song}</p>
+							</li>
+						) : "No hay canciones."}
+					</ul>
 				</div>
 			</div>
 			<div className="row">
 				<div className="col full">
-					<button onClick={handleSubmit}>Enviar</button>
+					<button className="editButton" onClick={() => props.setAction("edit")}>Editar</button>
 				</div>
 			</div>
 		</div>
